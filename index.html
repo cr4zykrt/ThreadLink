@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ThreadLink — Diana's Tailoring Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <!-- LOGO: put your logo image at images/logo.png -->
+    <a href="#top" class="logo-slot slot" data-label="Logo"><img src="images/logo.png" alt="ThreadLink logo" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></a>
+    <nav class="nav-links">
+      <a href="#top">Home</a><a href="#about">About us</a><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a>
+    </nav>
+    <div class="social">
+      <!-- put your Instagram / Facebook links in the href below -->
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+      <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4" fill="currentColor"/><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.3c0-.8.3-1.3 1.4-1.3h1.5V5.4c-.3 0-1.100-.1-2-.1-2.100 0-3.500 1.300-3.500 3.600V11H8.700v3H11v7z" fill="var(--bg)"/></svg></a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-text"><h1 class="hero-title">Every stitch tells a story.<br>Let us craft yours.</h1></div>
+    <!-- CAROUSEL: add your photo paths to carouselImages in js/main.js -->
+    <div class="reel"><div class="reel-track" id="reelTrack"></div></div>
+    <!-- MANNEQUIN: put your image at images/mannequin.png -->
+    <div class="mannequin slot" data-label="Mannequin image"><img src="images/mannequin.png" alt="" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></div>
+  </section>
+
+  </main>
+
+<script src="js/main.js"></script>
+</body>
+</html>
