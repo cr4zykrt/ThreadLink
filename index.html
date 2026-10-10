@@ -9,14 +9,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+  <body id="page-top" class="loading">
 
+<div class="loader" id="loader">
+  <img src="images/logo.png" alt="ThreadLink">
+</div>
 <header class="nav">
   <div class="nav-inner">
     <!-- LOGO: put your logo image at images/logo.png -->
     <a href="#top" class="logo-slot slot" data-label="Logo"><img src="images/logo.png" alt="ThreadLink logo" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></a>
     <nav class="nav-links">
-      <a href="#top">Home</a><a href="#about">About us</a><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a>
+      <a href="#page-top">Home</a><a href="#about">About us</a><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a>
     </nav>
     <div class="social">
       <!-- put your Instagram / Facebook links in the href below -->
@@ -49,6 +52,58 @@
   </text>
   <path d="M72 72l16 16M88 72L72 88" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
 </svg>
+<section class="about" id="about" aria-label="About us">
+
+  <div class="about-main">
+    <!-- LEFT -->
+    <div class="about-left">
+      <h2 class="about-eyebrow">About us</h2>
+  
+     <div class="gline"></div>
+      <p>Diana's Tailoring Services offers clothing repair, alterations, and made-to-order sewing. Customers seek us out for our tailoring work, from our own community and from other areas.</p>
+      <p>Every piece gets hands-on attention, so we can only take a limited number of orders at a time. Even in our busiest seasons we handle around 5 to 7 orders a day. That's how we make sure each garment gets the care it deserves.</p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="about-right">
+
+      <div class="a-block">
+        <h3>With ThreadLink</h3>
+        <div class="gline"></div>
+        <ol class="a-list">
+  <li>
+    <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18M9 15l2 2 4-4"/></svg>
+    <div><strong>Live availability</strong><span>See if we're accepting new orders before you travel.</span></div>
+  </li>
+  <li>
+    <svg class="ic" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+    <div><strong>Queue position</strong><span>Know how many orders are ahead of yours.</span></div>
+  </li>
+  <li>
+    <svg class="ic" viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>
+    <div><strong>Order tracking</strong><span>Check if your item is ready, anytime. Or ask our chatbot.</span></div>
+  </li>
+</ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+<div class="about-commit">
+  <ul class="commit-list">
+    <li><svg class="ic" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/></svg>
+        <div><strong>Quality craftsmanship</strong><span>Hands-on attention on every piece.</span></div></li>
+    <li><svg class="ic" viewBox="0 0 24 24"><path d="M12 7a2 2 0 1 0-2-2M12 7v3L3 17a1 1 0 0 0 .6 1.8h16.8A1 1 0 0 0 21 17l-9-7"/></svg>
+        <div><strong>Personal care</strong><span>Your clothes, our priority.</span></div></li>
+    <li><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <div><strong>Limited orders</strong><span>Fewer orders at a time, more care for each.</span></div></li>
+    <li><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <div><strong>Know before you go</strong><span>Check availability before you travel.</span></div></li>
+  </ul>
+</div>
+  </div>
+
+</section>
   </main>
 <!-- AI CHATBOT -->
 <button class="chat-fab" id="chatFab" aria-label="Open chat" aria-expanded="false">
