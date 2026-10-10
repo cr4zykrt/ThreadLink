@@ -76,3 +76,63 @@ const card = i => {
     track.addEventListener('mouseleave', startAuto);
   }
 });
+
+// ===== AI CHATBOT =====
+(function () {
+  const fab = document.getElementById('chatFab'), box = document.getElementById('chatBox');
+  const msgs = document.getElementById('chatMsgs'), form = document.getElementById('chatForm');
+  const input = document.getElementById('chatInput'), chips = document.getElementById('chatChips');
+  let greeted = false;
+
+  function toggle(open) {
+    const o = open === undefined ? !box.classList.contains('open') : open;
+    box.classList.toggle('open', o);
+    fab.classList.toggle('open', o);
+    fab.setAttribute('aria-expanded', o);
+    box.setAttribute('aria-hidden', !o);
+    if (o) {
+      if (!greeted) { add('bot', "Hi! I'm the ThreadLink assistant. Ask me about availability, your order status, or booking."); greeted = true; }
+      setTimeout(() => input.focus(), 300);
+    }
+  }
+
+  function add(who, text) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + who;
+    d.textContent = text;
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+    return d;
+  }
+
+  // >>> CONNECT YOUR BACKEND HERE <<<
+  async function getBotReply(text) {
+    // When your backend is ready, replace the lines below with something like:
+    // const r = await fetch('http://localhost:3000/api/chatbot/message', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ message: text })
+    // });
+    // return (await r.json()).reply;
+    await new Promise(r => setTimeout(r, 900));
+    return "Thanks for your message! The assistant isn't connected to the system yet.";
+  }
+
+  async function send(text) {
+    text = text.trim();
+    if (!text) return;
+    add('user', text);
+    input.value = '';
+    chips.style.display = 'none';
+    const t = add('bot typing', '');
+    t.innerHTML = '<i></i><i></i><i></i>';
+    try { const reply = await getBotReply(text); t.remove(); add('bot', reply); }
+    catch (e) { t.remove(); add('bot', 'Sorry, something went wrong. Please try again.'); }
+  }
+
+  fab.addEventListener('click', () => toggle());
+  document.getElementById('chatClose').addEventListener('click', () => toggle(false));
+  form.addEventListener('submit', e => { e.preventDefault(); send(input.value); });
+  chips.addEventListener('click', e => { if (e.target.tagName === 'BUTTON') send(e.target.textContent); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') toggle(false); });
+})();

@@ -35,9 +35,43 @@
     <!-- MANNEQUIN: put your image at images/mannequin.png -->
     <div class="mannequin slot" data-label="Mannequin image"><img src="images/mannequin.png" alt="" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></div>
   </section>
-
+<a href="#availability" class="cta">
+  <span>Book Now</span>
+  <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+</a>
+<!-- ROTATING BADGE -->
+<svg class="badge" viewBox="0 0 160 160" aria-hidden="true">
+  <defs>
+    <path id="badgeCircle" d="M80 80m-62 0a62 62 0 1 1 124 0a62 62 0 1 1-124 0"/>
+  </defs>
+  <text font-size="9.5" font-weight="600" fill="currentColor">
+    <textPath href="#badgeCircle" textLength="385" lengthAdjust="spacing">ALTERATIONS • MADE-TO-ORDER • CUSTOM TAILORING • REPAIR •</textPath>
+  </text>
+  <path d="M72 72l16 16M88 72L72 88" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>
   </main>
+<!-- AI CHATBOT -->
+<button class="chat-fab" id="chatFab" aria-label="Open chat" aria-expanded="false">
+  <svg class="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg>
+  <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+</button>
 
+<section class="chat-box" id="chatBox" role="dialog" aria-label="ThreadLink assistant" aria-hidden="true">
+  <header class="chat-head">
+    <div><strong>ThreadLink Assistant</strong><span>Ask about orders and availability</span></div>
+    <button id="chatClose" aria-label="Close chat">✕</button>
+  </header>
+  <div class="chat-msgs" id="chatMsgs" aria-live="polite"></div>
+  <div class="chat-chips" id="chatChips">
+    <button type="button">Is the shop available?</button>
+    <button type="button">Check my order</button>
+    <button type="button">Book an appointment</button>
+  </div>
+  <form class="chat-form" id="chatForm">
+    <input id="chatInput" type="text" placeholder="Type a message..." autocomplete="off" aria-label="Message">
+    <button type="submit" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+  </form>
+</section>
 <script src="js/main.js"></script>
 </body>
 </html>
