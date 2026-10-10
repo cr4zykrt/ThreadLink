@@ -43,7 +43,7 @@ section{padding:120px 48px;}
 @keyframes reel{to{transform:translateX(-50%)}}
 .rc{flex:none;width:clamp(130px,13vw,200px);aspect-ratio:4/3;margin-right:1.6vw;border-radius:16px;overflow:hidden;transform:translateY(var(--y)) rotate(var(--r));transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s}
 .rc:hover{transform:translateY(calc(var(--y) - 10px)) rotate(0) scale(1.07);box-shadow:0 20px 40px rgba(0,0,0,.25);z-index:5}
-.mannequin{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:90%;width:clamp(240px,27vw,400px);z-index:2;pointer-events:none;filter:drop-shadow(0 30px 22px rgba(0,0,0,0.18))}
+.mannequin{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:93%;width:clamp(320px,38vw,520px);z-index:2;pointer-events:none;filter:drop-shadow(0 30px 22px rgba(0,0,0,0.18))}
 .mannequin:not(.has){border:2px dashed var(--ink-soft);border-radius:16px}
 .mannequin img{object-fit:contain}
 .cta{
@@ -232,7 +232,7 @@ section{padding:120px 48px;}
   .hero-text{padding-top:56px}
   .hero-title{max-width:260px}
   .reel{top:53%;height:28%}
-  .mannequin{bottom:10%;width:72vw;height:46%}
+  .mannequin{bottom:10%;width:80vw;height:60%}
   .cta{left:50%;transform:translateX(-50%);bottom:20px;width:calc(100% - 48px);max-width:220px}
   .cta:hover{transform:translateX(-50%) translateY(-2px)}
   .social a{width:20px;height:20px}
@@ -259,7 +259,7 @@ section{padding:120px 48px;}
 .rc:hover .rc-title{ opacity:1; transform:translateY(0); }
 
 .badge{
-    position:absolute; right:10vw; top:19%;   /* was right:5vw; top:16% */
+    position:absolute; right:10vw; top:17%;   /* was right:5vw; top:16% */
   width:150px; z-index:3;
   color:var(--ink);
   animation:badge-spin 20s linear infinite;
@@ -330,3 +330,9 @@ section{padding:120px 48px;}
 @media (prefers-reduced-motion:reduce){ .chat-box, .msg, .msg.typing i{ transition:none; animation:none; } }
 @media (max-width:600px){ .cta{ right:84px; } }
 .chat-box{ padding:0; margin:0; }
+/* ===== NEEDLE CURSOR ===== */
+:root{
+  --needle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg stroke-linecap='round'%3E%3Cline x1='3' y1='3' x2='27' y2='27' stroke='%23fff' stroke-width='5'/%3E%3Cline x1='3' y1='3' x2='27' y2='27' stroke='%23000' stroke-width='2.4'/%3E%3C/g%3E%3Cellipse cx='25' cy='25' rx='1.2' ry='3' transform='rotate(-45 25 25)' fill='%23fff' stroke='%23000'/%3E%3C/svg%3E") 3 3, auto;
+}
+*{ cursor:var(--needle); }
+input{ cursor:text; }   /* keeps the normal typing cursor in the chat input */
