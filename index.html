@@ -52,6 +52,7 @@
   </text>
   <path d="M72 72l16 16M88 72L72 88" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
 </svg>
+<div class="about-wrap">
 <section class="about" id="about" aria-label="About us">
 
   <div class="about-main">
@@ -100,10 +101,34 @@
     <li><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
         <div><strong>Know before you go</strong><span>Check availability before you travel.</span></div></li>
   </ul>
-</div>
+</div>  
+  <div class="wipe" id="wipe">
+    <div class="wipe-services" id="services" aria-label="Our services">
+      <div class="svc-intro">
+             <h2>Our <span>Services</span></h2>
+        <p>Diana's Tailoring Services offers clothing repair, alterations, custom tailoring and made-to-order sewing, for customers from our own community and from other areas.</p>
+        <p>Every piece gets hands-on attention, which is why we take a limited number of orders at a time. Whether you need a torn seam mended, a favorite outfit resized, or a garment made around your own measurements, each job is done with care.</p>
+               <p>Check our availability on ThreadLink before you travel, so you know we can take your order. Choose a card to see what each service includes.</p>
+                <div class="svc-tags"><span></span><em>Alterations • Made-to-Order • Custom Tailoring • Repair</em><span></span></div>
+      </div>
+      <div class="helix" id="helix"></div>
+      <div class="svc-detail" id="svcDetail" aria-hidden="true">
+        <article class="svc-panel" role="dialog" aria-modal="true" aria-labelledby="svcTitle">
+          <div class="svc-media">
+            <img id="svcImg" src="" alt="">
+            <button type="button" class="svc-close" id="svcClose" aria-label="Close">✕</button>
+          </div>
+          <div class="svc-body">
+            <h3 id="svcTitle"></h3>
+            <p id="svcText"></p>
+          </div>
+        </article>
+      </div>
+    </div>
   </div>
-
 </section>
+<div class="wipe-spacer"></div>
+</div>
   </main>
 <!-- AI CHATBOT -->
 <button class="chat-fab" id="chatFab" aria-label="Open chat" aria-expanded="false">

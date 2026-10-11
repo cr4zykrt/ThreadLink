@@ -393,7 +393,7 @@ body.loaded .rc{
 .mannequin.seated{ opacity:0; }
 
 /* ===== ABOUT US ===== */
-:root{ --tape:#f8cb0a; }
+:root{ --tape:#e0b255; }
 
 .about{ display:flex; flex-direction:column; padding:0; overflow-x:clip; }
 
@@ -425,11 +425,11 @@ body.loaded .rc{
 .about-eyebrow{
   display:block; margin-bottom:16px;
   font-family:'Montserrat',sans-serif; font-size:clamp(16px,1.4vw,22px);
-  font-weight:500; line-height:1.1; letter-spacing:.02em; text-transform:uppercase; color:#f8cb0a;
+  font-weight:500; line-height:1.1; letter-spacing:.02em; text-transform:uppercase; color:#e0b255;
 }
 .about h2{
   font-family:'Montserrat',sans-serif; font-weight:500;
-  font-size:clamp(16px,1.4vw,22px); line-height:1.1; letter-spacing:.02em; text-transform:uppercase; color:#f8cb0a;
+  font-size:clamp(16px,1.4vw,22px); line-height:1.1; letter-spacing:.02em; text-transform:uppercase; color:#e0b255;
 }
 .about h2 em{ font-style:normal; color:var(--tape); }
 .about-left p{ font-size:14px; line-height:1.7; color:rgba(255,255,255,.9); margin-bottom:14px; }
@@ -438,7 +438,7 @@ body.loaded .rc{
 .about-right{ width:min(430px,28vw); display:flex; flex-direction:column; gap:4vh; }
 .a-block h3{
   font-family:'Montserrat',sans-serif; font-weight:500;
-  font-size:clamp(16px,1.4vw,22px); line-height:1.1; letter-spacing:.02em; text-transform:uppercase; color:#f8cb0a; margin-bottom:10px;
+  font-size:clamp(16px,1.4vw,22px); line-height:1.1; letter-spacing:.02em; text-transform:uppercase; color:#e0b255; margin-bottom:10px;
 }
 .a-block h3 em{ font-style:normal; color:var(--tape); }
 .a-list{ list-style:none; margin-top:6px; }
@@ -497,11 +497,11 @@ body.loaded .rc{
 }
 
 /* ===== ABOUT US: glass-panel layout ===== */
-.gline{ width:130px; height:1px; margin:18px 0 22px; background:linear-gradient(90deg,var(--tape),rgba(248,203,10,0)); }
+.gline{ width:130px; height:1px; margin:18px 0 22px; background:linear-gradient(90deg,var(--tape),rgba(224,178,85,0)); }
 
 .about-left, .about-right{
   background:rgba(0,0,0,.58); backdrop-filter:blur(3px);
-  border:1px solid rgba(248,203,10,.12); border-radius:4px; padding:4vh 2.4vw;
+  border:1px solid rgba(224,178,85,.12); border-radius:4px; padding:4vh 2.4vw;
 }
 .about-left{ width:min(520px,32vw); }
 .about-right{ width:min(480px,30vw); }
@@ -535,10 +535,10 @@ body.loaded .rc{
 .about-left, .about-right{
   border:1px solid;
   border-radius:0;
-  border-image:linear-gradient(135deg, rgba(248,203,10,.6), rgba(248,203,10,0) 65%) 1;
+  border-image:linear-gradient(135deg, rgba(224,178,85,.6), rgba(224,178,85,0) 65%) 1;
 }
 .about-right{
-  border-image:linear-gradient(225deg, rgba(248,203,10,.6), rgba(248,203,10,0) 65%) 1;
+  border-image:linear-gradient(225deg, rgba(224,178,85,.6), rgba(224,178,85,0) 65%) 1;
 }
 /* ===== About panels: no border, soft fade into the screen edges ===== */
 .about-left, .about-right{
@@ -612,4 +612,142 @@ body.loaded .rc{
   .about.anim .commit-label, .about.anim .commit-list li, .about.anim .ruler.wide,
   .about.anim.in .about-left > *, .about.anim.in .about-right > *,
   .about.anim.in .commit-label, .about.anim.in .commit-list li, .about.anim.in .ruler.wide{ transition:none; }
+}
+.a-block .ruler{ width:120px; }
+/* ===== SCROLL WIPE: fill rises over About, revealing Services ===== */
+.about-wrap{ position:relative; }
+.about{ position:sticky; top:0; overflow:clip; }      /* pinned while the fill rises */
+.wipe{
+  position:absolute; left:0; top:0; width:100%; height:calc(100% + 30vh); z-index:5;
+  background:#000 url("../images/services-bg.png") center top/cover no-repeat;   /* the rising fill is the services picture */
+  border-radius:50% 50% 0 0 / 30vh 30vh 0 0;
+  transform:translateY(100%);                           /* hidden below until you scroll */
+  pointer-events:none; will-change:transform;
+}
+.services{ min-height:100vh; }
+
+/* Services lives inside the white fill: centered in the visible screen */
+.wipe-services{
+  position:absolute; left:0; right:0; bottom:30vh; height:100vh;   /* 30vh = the wipe's curved-edge extension */
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:0 24px; color:var(--ink);
+}
+.helix{ position:relative; width:100%; height:100%; overflow:hidden; perspective:1000px; transition:transform 1s cubic-bezier(.2,.8,.2,1); }
+.wipe-services.done .helix{ transform:translateX(20vw); }
+.hc{
+  position:absolute; left:50%; top:50%;
+  width:clamp(90px,11vw,130px); aspect-ratio:3/4;
+  border-radius:12px; overflow:hidden;
+  background:var(--card); border:0;
+  box-shadow:0 14px 34px rgba(0,0,0,.28);
+  will-change:transform,opacity;
+}
+.hc img{ width:100%; height:100%; object-fit:cover; display:block; }
+.hc span{
+  position:absolute; left:0; right:0; bottom:0; padding:22px 8px 9px;
+  font:600 .66rem/1.2 'Montserrat',sans-serif; letter-spacing:.06em; text-transform:uppercase;
+  text-align:center; color:#fff; background:linear-gradient(transparent, rgba(0,0,0,.75));
+} 
+/* Services: clickable cards + big detail panel */
+.helix.ready .hc{ pointer-events:auto; cursor:pointer; }
+
+.svc-detail{
+  position:absolute; inset:0; z-index:300;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  background:rgba(0,0,0,.45);
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition:opacity .3s ease, visibility .3s ease;
+}
+.svc-detail.open{ opacity:1; visibility:visible; pointer-events:auto; }
+.svc-panel{
+  width:min(540px,100%); max-height:100%; overflow:auto;
+  background:#0c0a08; border:0; border-radius:18px;
+  box-shadow:0 30px 80px rgba(0,0,0,.4);
+  transform:scale(.55) translateY(24px);
+  transition:transform .45s cubic-bezier(.2,.9,.3,1.15);
+}
+.svc-detail.open .svc-panel{ transform:none; }
+.svc-media{ position:relative; aspect-ratio:16/10; background:var(--slot); }
+.svc-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+.svc-close{
+  position:absolute; top:12px; right:12px; width:38px; height:38px;
+  border:0; border-radius:50%; cursor:pointer;
+  background:rgba(0,0,0,.65); color:#fff; font-size:1rem; line-height:1;
+}
+.svc-close:hover{ background:#000; }
+.svc-body{ padding:22px 26px 28px; color:#fff; font-family:'Montserrat',sans-serif; }
+.svc-body h3{ margin:0 0 .4em; font-family:'Montserrat',sans-serif; font-weight:600; font-size:1.7rem; color:#fff; }
+.svc-body p{ margin:0; line-height:1.65; color:rgba(255,255,255,.82); }
+/* Services: title + paragraph on the left */
+.svc-intro{
+  position:absolute; left:0; top:0; bottom:0; z-index:20;
+  width:max(380px,38vw); transform:translateX(-90px); opacity:0;
+  display:flex; flex-direction:column; justify-content:flex-start;
+  padding:14vh 40px 40px 6vw; overflow:auto;
+  text-align:left; color:#fff; font-family:'Montserrat',sans-serif;
+  pointer-events:none;
+  transition:opacity .8s ease .35s, transform 1s cubic-bezier(.2,.8,.2,1) .35s;
+}
+.wipe-services.done .svc-intro{ opacity:1; transform:none; }
+.svc-intro h2{
+  font-family:'Instrument Serif',serif; font-weight:400; color:#fff;
+  font-size:clamp(2.4rem,4.6vw,4.2rem); line-height:1.05; margin:0 0 1.1em;
+  text-transform:uppercase; letter-spacing:.02em;
+}
+.svc-intro h2::after{
+  content:""; display:block; width:56px; height:2px; margin-top:.45em;
+  background:#e0b255;                              /* gold rule under the title */
+}
+.svc-intro p{ margin:0 0 1.1em; font-size:clamp(.88rem,1.05vw,1rem); line-height:1.6; color:rgba(255,255,255,.92); }
+
+@media (max-width:900px){
+  .wipe-services.done .helix{ transform:translateY(24vh); }
+  .svc-intro{ bottom:auto; width:100%; max-height:62%; padding:12vh 24px 24px; }
+}
+/* gold tagline under the paragraphs */
+.svc-tags{ display:flex; align-items:center; gap:14px; margin-top:1.6em; }
+.svc-tags span{ flex:1; height:1px; background:#e0b255; opacity:.8; }
+.svc-tags em{
+  font-style:normal; font-weight:600; white-space:normal; text-align:center; line-height:1.7;
+  font-size:clamp(.58rem,.7vw,.7rem); letter-spacing:.16em; text-transform:uppercase; color:#e0b255;
+}
+.svc-tags span{ min-width:14px; flex:0 1 28px; }
+/* card hover (only active once the fill is complete and cards are clickable) */
+.hc{ transition:box-shadow .3s ease, border-color .3s ease; }
+.hc img{ transition:transform .5s cubic-bezier(.2,.8,.2,1); }
+.hc span{ transition:color .3s ease, letter-spacing .3s ease; }
+
+.helix.ready .hc:hover{
+  z-index:999 !important;            /* pop to the front, over the other cards */
+  opacity:1 !important;              /* full brightness even if it was at the back */
+  box-shadow:0 22px 50px rgba(0,0,0,.45);
+}
+.helix.ready .hc:hover img{ transform:scale(1.12); }
+.helix.ready .hc:hover span{ color:#fff; letter-spacing:.1em; }
+/* services screen: background fades in once the white fill is complete */
+.wipe-services{ --gold:#e0b255; }          /* the one place to change the gold */
+
+
+/* gold accents, as in your picture */
+.svc-intro h2 span{ color:var(--gold); }
+.svc-intro h2::after{ background:var(--gold); }
+.svc-tags span{ background:var(--gold); }
+.svc-tags em{ color:var(--gold); }
+
+/* cards: thin gold border with a soft glow */
+.hc{
+  border:1px solid rgba(224,178,85,.55);
+  box-shadow:0 0 18px rgba(224,178,85,.22), 0 14px 34px rgba(0,0,0,.45);
+}
+.helix.ready .hc:hover{
+  border-color:var(--gold);
+  box-shadow:0 0 26px rgba(224,178,85,.5), 0 22px 50px rgba(0,0,0,.5);
+}
+/* comet trails: drawn behind the cards */
+.hc-trails{ position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
+/* About + With ThreadLink titles: same style as Our Services */
+.about-eyebrow, .about h2, .a-block h3{
+  font-family:'Instrument Serif',serif; font-weight:400;
+  text-transform:uppercase; letter-spacing:.02em;
+  font-size:clamp(26px,2.6vw,40px); line-height:1.05;
 }
