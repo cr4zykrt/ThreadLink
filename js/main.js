@@ -237,6 +237,7 @@ const card = i => {
   }
 
   let t = 0, D = 1, H = 0, E = 0;
+  const HOLD_VH = 0.7;   // extra scrolling while Services stays pinned (0.7 = 70% of a screen). Bigger = longer lock
 
   function update() {
     const scrolled = -wrap.getBoundingClientRect().top;
@@ -254,7 +255,8 @@ const card = i => {
     D = vh;                                        // how much scrolling the fill takes
     t = Math.min(0, vh - H);                       // keeps the bottom visible if About is taller than the screen
     about.style.top = t + 'px';
-    spacer.style.height = D + 'px';
+ window.tlHold = vh * HOLD_VH;
+spacer.style.height = (D + window.tlHold) + 'px';   // the extra distance is the lock
     wipe.style.height = (H + E) + 'px';
     update();
   }
@@ -276,9 +278,10 @@ const card = i => {
 
   function targetY(id) {
     // Services now lives inside the white fill, so it sits at the very end of the page
-    if (id === 'services' && document.getElementById('wipe')) {
-      return document.documentElement.scrollHeight - window.innerHeight;
-    }
+if (id === 'services' && document.getElementById('wipe')) {
+  const w = document.querySelector('.about-wrap');
+return w.offsetTop + w.offsetHeight - window.innerHeight - (window.tlHold || 0);// end of the wipe, not end of page
+}
     const el = document.getElementById(id);
     if (!el) return null;
     const host = id === 'about' ? el.parentElement : el;   // About is pinned, so use its wrapper
@@ -315,7 +318,8 @@ const dur = Math.min(1200, Math.max(350, Math.abs(dist) * 0.7));   // faster gli
   let locked = false, stop = 0, lockStart = 0, lastDownInput = 0, lastY = window.scrollY;
 
   function stops() {
-    return [Math.round(wrap.getBoundingClientRect().top + window.scrollY)];
+const top = Math.round(wrap.getBoundingClientRect().top + window.scrollY);
+return [top, Math.round(top + wrap.offsetHeight - window.innerHeight - (window.tlHold || 0))];
   }
   function unlock() { locked = false; lastY = window.scrollY; }
 
@@ -526,4 +530,69 @@ const dur = Math.min(1200, Math.max(350, Math.abs(dist) * 0.7));   // faster gli
   });
 
   render(reduce ? 1 : 0);
+})();
+// ===== PRICING SLIDER =====
+(function () {
+  const stage = document.getElementById('prStage');
+  if (!stage) return;
+
+  // >>> EDIT YOUR GARMENTS HERE <<<
+  // img   : transparent PNG in images/pricing/
+  // color : background color of that slide    tone: 'light' = white text, 'dark' = black text
+  // price : type your real price              ghost: the big faded word behind the garment
+const items = [
+  { name: 'Filipiniana',    ghost: 'Filipiniana', price: '₱000', color: '#0b0907', ink: '#e0b255', img: 'images/pricing/filipiniana.png', desc: 'Short description of this service.' },
+  { name: 'Barong Tagalog', ghost: 'Barong',      price: '₱000', color: '#1c1308', ink: '#f8cb0a', img: 'images/pricing/barong.png',      desc: 'Short description of this service.' },
+  { name: 'Uniform',        ghost: 'Uniform',     price: '₱000', color: '#4e3a1e', ink: '#f3e3b5', img: 'images/pricing/uniform.png',     desc: 'Short description of this service.' },
+{ name: 'Dress', ghost: 'Dress', price: '₱000', color: '#2e2010', ink: '#e0b255', img: 'images/pricing/dress.png', desc: 'Short description of this service.' }
+];
+
+  const $ = id => document.getElementById(id);
+  const name = $('prName'), desc = $('prDesc'), ghost = $('prGhost'), img = $('prImg'),
+        hero = $('prHero'), ph = $('prPh'), thumbs = $('prThumbs'), dots = $('prDots'), wipe = $('prWipe');
+  let cur = 0, busy = false;
+
+  thumbs.innerHTML = items.map((it, i) =>
+    `<button type="button" class="pr-thumb" data-i="${i}"><img src="${it.img}" alt="" onerror="this.outerHTML='<div class=&quot;t-ph&quot;></div>'"><div><b>${it.name}</b><span>${it.price}</span></div></button>`).join('');
+  dots.innerHTML = items.map(() => '<i></i>').join('');
+
+  function fill(i) {
+    const it = items[i];
+    name.textContent = it.name;
+    desc.textContent = it.desc;
+    ghost.textContent = it.ghost;
+    $('prAmount').textContent = it.price;
+    ph.textContent = 'Put ' + it.img.split('/').pop() + ' in images/pricing/';
+    hero.classList.remove('noimg');
+    img.hidden = false;
+    img.onerror = () => { img.hidden = true; hero.classList.add('noimg'); };
+    img.src = it.img; img.alt = it.name;
+    stage.style.setProperty('--pr-ink', it.ink);
+    thumbs.querySelectorAll('.pr-thumb').forEach((b, k) => b.classList.toggle('on', k === i));
+    dots.querySelectorAll('i').forEach((d, k) => d.classList.toggle('on', k === i));
+  }
+
+  function go(i) {
+    i = (i + items.length) % items.length;
+    if (busy || i === cur) return;
+    busy = true;
+    stage.style.setProperty('--pr-next', items[i].color);
+    stage.classList.add('swap', 'wiping');                                  // old content blurs out, new color slides in
+    setTimeout(() => { fill(i); stage.classList.remove('swap'); }, 380);    // swap while the color covers the middle
+    setTimeout(() => {
+      stage.style.setProperty('--pr-bg', items[i].color);                   // new color becomes permanent
+      wipe.style.transition = 'none';
+      stage.classList.remove('wiping');                                     // snap the wipe layer back off-screen
+      void wipe.offsetWidth;
+      wipe.style.transition = '';
+      cur = i; busy = false;
+    }, 800);
+  }
+
+  thumbs.addEventListener('click', e => { const b = e.target.closest('.pr-thumb'); if (b) go(+b.dataset.i); });
+  $('prPrev').addEventListener('click', () => go(cur - 1));
+  $('prNext').addEventListener('click', () => go(cur + 1));
+
+  stage.style.setProperty('--pr-bg', items[0].color);
+  fill(0);
 })();
