@@ -764,7 +764,7 @@ body.loaded .rc{
 .pr-info p{ margin:18px 0 22px; font-size:13px; line-height:1.6; opacity:.85; }
 .pr-btn{ display:inline-flex; gap:10px; align-items:center; padding:10px 18px; font-size:12px; font-weight:600; border-radius:4px; background:var(--pr-ink); color:var(--pr-bg); transition:transform .25s; }
 .pr-btn:hover{ transform:translateY(-2px); }
-.pr-hero{ position:absolute; left:50%; top:46%; z-index:3; width:min(46vw,620px); height:52vh; transform:translate(-50%,-50%); }
+.pr-hero{ position:absolute; left:50%; top:46%; z-index:3; width:min(60vw,820px); height:72vh; transform:translate(-50%,-50%); }
 .pr-hero img{ width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 30px 30px rgba(0,0,0,.35)); }
 .pr-hero img[hidden]{ display:none; }
 .pr-ph{ display:none; position:absolute; inset:0; place-items:center; text-align:center; border:2px dashed currentColor; border-radius:16px; font-size:13px; opacity:.5; padding:20px; }
@@ -799,3 +799,18 @@ body.loaded .rc{
   .pr-thumb{ padding:8px; gap:8px; } .pr-thumb img,.pr-thumb .t-ph{ width:38px; height:38px; }
   .pr-thumb b{ font-size:10px; } .pr-arrow{ display:none; }
 }
+/* ===== PRICING: contents fall in from the top when the section is reached ===== */
+.pr-stage:not(.drop) .pr-info, .pr-stage:not(.drop) .pr-price, .pr-stage:not(.drop) .pr-ghost,
+.pr-stage:not(.drop) .pr-hero, .pr-stage:not(.drop) .pr-dots, .pr-stage:not(.drop) .pr-bar{ opacity:0; }
+@keyframes prFall{ from{ translate:0 -115vh; opacity:0; } to{ translate:0 0; } }
+.pr-stage.drop .pr-info, .pr-stage.drop .pr-price, .pr-stage.drop .pr-ghost,
+.pr-stage.drop .pr-hero, .pr-stage.drop .pr-dots, .pr-stage.drop .pr-bar{
+  animation:prFall 1s cubic-bezier(.34,1.35,.5,1) backwards; animation-delay:var(--fd,0s);
+}
+.pr-stage.drop .pr-info { --fd:0s; }
+.pr-stage.drop .pr-price{ --fd:.12s; }
+.pr-stage.drop .pr-ghost{ --fd:.24s; }
+.pr-stage.drop .pr-hero { --fd:.36s; }
+.pr-stage.drop .pr-dots { --fd:.52s; }
+.pr-stage.drop .pr-bar  { --fd:.6s; }
+@media (prefers-reduced-motion:reduce){ .pr-stage:not(.drop) .pr-info,.pr-stage:not(.drop) .pr-price,.pr-stage:not(.drop) .pr-ghost,.pr-stage:not(.drop) .pr-hero,.pr-stage:not(.drop) .pr-dots,.pr-stage:not(.drop) .pr-bar{ opacity:1; } .pr-stage.drop *{ animation:none !important; } }

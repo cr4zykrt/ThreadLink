@@ -541,10 +541,10 @@ return [top, Math.round(top + wrap.offsetHeight - window.innerHeight - (window.t
   // color : background color of that slide    tone: 'light' = white text, 'dark' = black text
   // price : type your real price              ghost: the big faded word behind the garment
 const items = [
-  { name: 'Filipiniana',    ghost: 'Filipiniana', price: '₱000', color: '#0b0907', ink: '#e0b255', img: 'images/pricing/filipiniana.png', desc: 'Short description of this service.' },
-  { name: 'Barong Tagalog', ghost: 'Barong',      price: '₱000', color: '#1c1308', ink: '#f8cb0a', img: 'images/pricing/barong.png',      desc: 'Short description of this service.' },
-  { name: 'Uniform',        ghost: 'Uniform',     price: '₱000', color: '#4e3a1e', ink: '#f3e3b5', img: 'images/pricing/uniform.png',     desc: 'Short description of this service.' },
-{ name: 'Dress', ghost: 'Dress', price: '₱000', color: '#2e2010', ink: '#e0b255', img: 'images/pricing/dress.png', desc: 'Short description of this service.' }
+  { name: 'Barong Tagalog', ghost: 'Barong',      price: '₱000', color: '#3a2c1f', ink: '#efe3c8', img: 'images/pricing/barong.png',      desc: 'Short description of this service.' },
+{ name: 'Filipiniana', ghost: 'Filipiniana', price: '₱000', color: '#14241c', ink: '#e8d9a8', img: 'images/pricing/filipiniana.png', desc: 'Short description of this service.' },
+{ name: 'Uniform',        ghost: 'Uniform',     price: '₱000', color: '#2b2830', ink: '#d9bde6', img: 'images/pricing/uniform.png',     desc: 'Short description of this service.' },
+{ name: 'Dress',          ghost: 'Dress',       price: '₱000', color: '#566176', ink: '#f1f3f7', img: 'images/pricing/dress.png',       desc: 'Short description of this service.' }
 ];
 
   const $ = id => document.getElementById(id);
@@ -595,4 +595,9 @@ const items = [
 
   stage.style.setProperty('--pr-bg', items[0].color);
   fill(0);
+  new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) stage.classList.add('drop');
+  else if (e.intersectionRatio === 0) stage.classList.remove('drop');
+}), { threshold: [0, 0.2] }).observe(stage);
 })();
+// fall-in: play when the section comes into view, reset when it is fully off-screen so it replays
