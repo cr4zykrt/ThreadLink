@@ -1,4 +1,3 @@
-// ---------- Scroll reveal ----------
 document.addEventListener('DOMContentLoaded', () => {
   // ===== HERO CAROUSEL IMAGES =====
   // Put your photo paths here, e.g. ['images/work1.jpg','images/work2.jpg']. Leave empty to show gray placeholders.
@@ -18,16 +17,6 @@ const card = i => {
     rt.innerHTML = Array.from({length: n * 2}, (_, i) => card(i % n)).join('');
   }
 
-  // Mark elements for reveal
-  const revealTargets = document.querySelectorAll(
-    
-    '.service-card, .availability-card, .availability-copy, .how-steps li, .section-head, .testimonials .carousel, .about-card'
-  );
-  revealTargets.forEach((el, i) => {
-    el.classList.add('reveal');
-    el.style.transitionDelay = `${(i % 4) * 80}ms`;
-  });
-
   // ---------- Intro loader ----------
   const loader = document.getElementById('loader');
   const start = performance.now();
@@ -46,54 +35,6 @@ const card = i => {
   else window.addEventListener('load', openSite);
 
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-
-  revealTargets.forEach(el => observer.observe(el));
-
-  // ---------- Testimonial carousel ----------
-  const track = document.getElementById('carouselTrack');
-  const dotsContainer = document.getElementById('carouselDots');
-  if (track && dotsContainer) {
-    const slides = Array.from(track.querySelectorAll('.testimonial'));
-    let current = 0;
-    let autoTimer;
-
-    slides.forEach((_, i) => {
-      const dot = document.createElement('span');
-      if (i === 0) dot.classList.add('active');
-      dot.addEventListener('click', () => goTo(i));
-      dotsContainer.appendChild(dot);
-    });
-    const dots = Array.from(dotsContainer.children);
-
-    function goTo(index) {
-      slides[current].classList.remove('active');
-      dots[current].classList.remove('active');
-      current = (index + slides.length) % slides.length;
-      slides[current].classList.add('active');
-      dots[current].classList.add('active');
-    }
-
-    function startAuto() {
-      autoTimer = setInterval(() => goTo(current + 1), 5000);
-    }
-    function stopAuto() {
-      clearInterval(autoTimer);
-    }
-
-    slides[0].classList.add('active');
-    startAuto();
-
-    track.addEventListener('mouseenter', stopAuto);
-    track.addEventListener('mouseleave', startAuto);
-  }
 });
 
 // ===== AI CHATBOT =====
@@ -162,11 +103,10 @@ const card = i => {
   const about = document.getElementById('about');
   if (!m || !about) return;
 
-  const BG_W = 1679, BG_H = 894;     // about-seated.png size
   const PNG_W = 1027, PNG_H = 1532;   // mannequin.png size
-  const CHAIR_X = 0.489;  // mannequin centre in the seated image (left → right)
-  const SEAT_Y  = 0.85;   // bottom edge of mannequin.png in the seated image (top → bottom)
-  const SIZE    = 0.564;  // mannequin.png height / seated image height
+  // where the mannequin lands in each seated picture: chairX = centre (left → right), seatY = bottom edge of mannequin.png (top → bottom), size = mannequin.png height / picture height
+  const DESK  = { w: 1679, h: 894,  chairX: 0.489, seatY: 0.85,  size: 0.564  };   // about-seated.png (computer)
+  const PHONE = { w: 940,  h: 1672, chairX: 0.642, seatY: 0.606, size: 0.2584 };   // phone-about-us-bg-seated.png (phone)
 
   let dx = 0, dy = 0, endScale = 1, range = 1, gap = 0;
 
@@ -186,15 +126,24 @@ const card = i => {
     const sy = window.scrollY;
     const aboutTop = about.parentElement.getBoundingClientRect().top + sy;
     const W = about.clientWidth, H = about.offsetHeight;
-    const k = Math.max(W / BG_W, H / BG_H);            // background-size: cover
-    const iw = BG_W * k, ih = BG_H * k;
-    const chairX = (W - iw) / 2 + CHAIR_X * iw;
-    const seatY  = aboutTop + (H - ih) / 2 + SEAT_Y * ih;
+    const phone = window.matchMedia('(max-width: 900px)').matches;
+    const C = phone ? PHONE : DESK;
+    let iw, ih, ox, oy;
+    if (phone) {                                        // phone picture is enlarged and nudged up (see the CSS)
+      ih = Math.max(1.18 * H, W * C.h / C.w); iw = ih * C.w / C.h;
+      ox = (W - iw) / 2; oy = -0.23 * H;
+    } else {                                            // computer: background-size: cover
+      const k = Math.max(W / C.w, H / C.h);
+      iw = C.w * k; ih = C.h * k;
+      ox = (W - iw) / 2; oy = (H - ih) / 2;
+    }
+    const chairX = ox + C.chairX * iw;
+    const seatY  = aboutTop + oy + C.seatY * ih;
 
     const c = Math.min(r.width / PNG_W, r.height / PNG_H);  // object-fit: contain
     const imgH = PNG_H * c;
     gap = (r.height - imgH) / 2;                            // empty space under the picture
-    endScale = (SIZE * ih) / imgH;
+    endScale = (C.size * ih) / imgH;
     dx = chairX - (r.left + r.width / 2);
     dy = seatY - (r.bottom + sy) + gap * endScale;
     range = Math.max(1, aboutTop);
@@ -218,7 +167,7 @@ const card = i => {
   about.classList.add('anim');
   about.querySelectorAll('.about-left > *').forEach((el, i) => el.style.setProperty('--d', i));
   about.querySelectorAll('.about-right > *').forEach((el, i) => el.style.setProperty('--d', i + 1));
-  about.querySelectorAll('.ruler.wide, .commit-label, .commit-list li').forEach((el, i) => el.style.setProperty('--d', i + 3));
+  about.querySelectorAll('.commit-list li').forEach((el, i) => el.style.setProperty('--d', i + 3));
 })();
 // ===== SCROLL WIPE: fill rises from the bottom as you scroll =====
 (function () {
@@ -314,12 +263,13 @@ const dur = Math.min(1200, Math.max(350, Math.abs(dist) * 0.7));   // faster gli
   const HOLD_MIN = 600;   // ms minimum hold at a stop
   const QUIET    = 150;   // ms of no downward input before it releases
   const HOLD_MAX = 900;   // hard cap: never locked longer than this
-  const armed = [true, true];
+ const armed = [true, true, true];
   let locked = false, stop = 0, lockStart = 0, lastDownInput = 0, lastY = window.scrollY;
 
   function stops() {
 const top = Math.round(wrap.getBoundingClientRect().top + window.scrollY);
-return [top, Math.round(top + wrap.offsetHeight - window.innerHeight - (window.tlHold || 0))];
+const pr = document.getElementById('pricing');
+return [top, Math.round(top + wrap.offsetHeight - window.innerHeight - (window.tlHold || 0)), pr ? Math.round(pr.getBoundingClientRect().top + window.scrollY) : 1e9];
   }
   function unlock() { locked = false; lastY = window.scrollY; }
 
@@ -386,7 +336,12 @@ return [top, Math.round(top + wrap.offsetHeight - window.innerHeight - (window.t
   const N     = 10;    // total cards (two strands, interleaved)
   const TURNS = 1.5;   // full rotations from first scroll to full fill
   const STEP  = 0.62;  // twist between neighbouring cards (radians)
-
+  const phone = () => window.matchMedia('(max-width: 900px)').matches;
+  const lean  = (W, y, span) => {                    // phones: the helix hugs the right edge beside the text, then swings left underneath it
+    if (!phone()) return 0;
+    const t = y / span + 0.5, s = Math.min(1, Math.max(0, (t - 0.68) / 0.32));
+    return W * (0.22 - 0.42 * s * s * (3 - 2 * s));
+  };
   const cards = Array.from({ length: N }, (_, i) => {
     const s = services[i % services.length];
     const el = document.createElement('div');
@@ -430,7 +385,7 @@ return [top, Math.round(top + wrap.offsetHeight - window.innerHeight - (window.t
       for (let s = 0; s <= SEG; s++) {
         const t = s / SEG;                              // 0 = head, 1 = tail tip
         const ang = angles[i] - dir * trailLen * t;     // where the card was a moment ago
-        const x = W / 2 + Math.sin(ang) * R;
+        const x = W / 2 + Math.sin(ang) * R + lean(W, (i / (N - 1) - 0.5) * span, span);
         const k = (Math.cos(ang) + 1) / 2;              // front cards glow brighter
         if (px !== null) {
           cx.strokeStyle = `rgba(255,214,140,${(1 - t) * (0.25 + 0.55 * k)})`;
@@ -458,14 +413,14 @@ return [top, Math.round(top + wrap.offsetHeight - window.innerHeight - (window.t
     host.classList.toggle('ready', p >= 0.98);      // cards are clickable only when the fill is complete
     host.parentElement.classList.toggle('done', p >= 0.98);   // slide the helix right and the text in
     const W = host.clientWidth, H = host.clientHeight;
-    const R = Math.min(W * 0.28, 300);   // helix radius
+    const R = Math.min(W * (phone() ? 0.15 : 0.28), 300);   // helix radius
     const span = H * 0.78;               // vertical length of the helix
     cards.forEach((el, i) => {
       const a = i * STEP + (i % 2) * Math.PI + p * TURNS * 2 * Math.PI + extra;
       angles[i] = a;
       const depth = Math.cos(a);
-      const x = Math.sin(a) * R;
       const y = (i / (N - 1) - 0.5) * span;
+      const x = Math.sin(a) * R + lean(W, y, span);
       const k = (depth + 1) / 2;                       // 0..1
       el.style.transform =
         `translate(-50%, -50%) translate(${x}px, ${y}px) rotateY(${Math.sin(a) * 35}deg) scale(${0.72 + 0.28 * k})`;
@@ -601,3 +556,92 @@ const items = [
 }), { threshold: [0, 0.2] }).observe(stage);
 })();
 // fall-in: play when the section comes into view, reset when it is fully off-screen so it replays
+// ===== CONTACT FORM + "BOOK A SERVICE" + MAP ZOOM (front end only, not connected to a backend yet) =====
+(function () {
+  const form = document.getElementById('ctForm');
+  if (form) {
+    const note = document.getElementById('ctNote');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const d = new FormData(form);
+      if (!d.get('name').trim() || !d.get('message').trim()) { note.textContent = 'Please enter your name and a message.'; return; }
+      // >>> CONNECT YOUR BACKEND HERE <<<
+      note.textContent = "Thanks! The form isn't connected to the system yet.";
+      form.reset();
+    });
+  }
+  const chat = document.getElementById('ctChat'), fab = document.getElementById('chatFab');
+  if (chat && fab) chat.addEventListener('click', () => {
+    if (fab.getAttribute('aria-expanded') !== 'true') fab.click();   // opens the ThreadLink assistant
+  });
+  const frame = document.getElementById('ctMapFrame');
+  if (frame) {
+    let z = 16;
+    const set = n => { z = Math.max(12, Math.min(19, n)); frame.src = 'https://maps.google.com/maps?q=11.2115629,125.0016377&z=' + z + '&output=embed'; };
+    document.getElementById('ctZin').addEventListener('click', () => set(z + 1));
+    document.getElementById('ctZout').addEventListener('click', () => set(z - 1));
+  }
+})();
+
+// ===== PHONES: menu button, and a touch version of the "stop at each section" scroll gate =====
+(function () {
+  if (!window.matchMedia('(pointer: coarse)').matches) return;
+  Object.defineProperty(window, 'tlAutoScroll', { get: () => true, set: () => {} });   // turns off the desktop (mouse-wheel) gate
+
+  const wrap = document.querySelector('.about-wrap');
+  const pr = document.getElementById('pricing'), ct = document.getElementById('contact');
+  const HOLD = 700;                                   // ms the page stays stopped at each section
+  const armed = [true, true, true, true];
+  let locked = false, lastY = window.scrollY, navUntil = 0, stopY = 0;
+
+  const abs = el => Math.round(el.getBoundingClientRect().top + window.scrollY);
+  function stops() {
+    if (!wrap) return [];
+    return [
+      abs(wrap),                                                                         // About
+      Math.round(abs(wrap) + wrap.offsetHeight - window.innerHeight - (window.tlHold || 0)),   // Services (fill is full)
+      pr ? abs(pr) : 1e9,                                                                // Pricing
+      ct ? abs(ct) : 1e9                                                                 // Contact
+    ];
+  }
+  function lock(i, y) {
+    locked = true; armed[i] = false; stopY = y;
+    window.scrollTo({ top: y, behavior: 'instant' });
+    setTimeout(() => { locked = false; lastY = window.scrollY; }, HOLD);
+  }
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY, list = stops();
+    list.forEach((s, i) => { if (y < s - 80) armed[i] = true; else if (performance.now() < navUntil && y >= s - 1) armed[i] = false; });
+    if (locked) {
+      if (y < stopY - 2) { locked = false; lastY = y; return; }          // scrolled up: release at once
+      if (y > stopY + 1) window.scrollTo({ top: stopY, behavior: 'instant' });   // pushed down: hold the stop
+      return;
+    }
+    if (performance.now() < navUntil) { lastY = y; return; }          // menu glide: don't interfere
+    const i = list.findIndex((s, k) => armed[k] && lastY <= s && y > s + 1);
+    if (i !== -1) lock(i, list[i]);
+    lastY = y;
+  }, { passive: true });
+
+  // ----- menu button + full-screen menu -----
+  const links = document.querySelectorAll('.nav-links a[href^="#"]');
+  if (!links.length) return;
+  const burger = document.createElement('button');
+  burger.className = 'm-burger'; burger.type = 'button'; burger.setAttribute('aria-label', 'Menu');
+  burger.innerHTML = '<span></span><span></span><span></span>';
+  const menu = document.createElement('nav');
+  menu.className = 'm-menu';
+  function close() { burger.classList.remove('open'); menu.classList.remove('open'); }
+  links.forEach(a => {
+    const m = document.createElement('a');
+    m.href = a.getAttribute('href'); m.textContent = a.textContent;
+    m.addEventListener('click', e => {
+      e.preventDefault(); close();
+      navUntil = performance.now() + 1900;                            // the glide below must not trigger the gate
+      setTimeout(() => a.click(), 250);                               // reuse the page's own smooth scroll
+    });
+    menu.appendChild(m);
+  });
+  burger.addEventListener('click', () => { burger.classList.toggle('open'); menu.classList.toggle('open'); });
+  document.body.append(menu, burger);
+})();
